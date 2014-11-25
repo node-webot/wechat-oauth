@@ -1,4 +1,4 @@
-var should = require('should');
+var expect = require('expect.js');
 var urllib = require('urllib');
 var muk = require('muk');
 var OAuth = require('../');
@@ -9,17 +9,17 @@ describe('oauth.js', function () {
     var auth = new OAuth('appid', 'appsecret');
     it('should ok', function () {
       var url = auth.getAuthorizeURL('http://diveintonode.org/');
-      url.should.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_base&state=#wechat_redirect');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_base&state=#wechat_redirect');
     });
 
     it('should ok with state', function () {
       var url = auth.getAuthorizeURL('http://diveintonode.org/', 'hehe');
-      url.should.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_base&state=hehe#wechat_redirect');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_base&state=hehe#wechat_redirect');
     });
 
     it('should ok with state and scope', function () {
       var url = auth.getAuthorizeURL('http://diveintonode.org/', 'hehe', 'snsapi_userinfo');
-      url.should.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_userinfo&state=hehe#wechat_redirect');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/oauth2/authorize?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_userinfo&state=hehe#wechat_redirect');
     });
   });
 
@@ -27,9 +27,9 @@ describe('oauth.js', function () {
     var api = new OAuth(config.appid, config.appsecret);
     it('should invalid', function (done) {
       api.getAccessToken('code', function (err, data) {
-        should.exist(err);
-        err.name.should.be.equal('WeChatAPIError');
-        err.message.should.be.equal('invalid code');
+        expect(err).to.be.ok();
+        expect(err.name).to.be.equal('WeChatAPIError');
+        expect(err.message).to.be.equal('invalid code');
         done();
       });
     });
@@ -56,9 +56,9 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.getAccessToken('code', function (err, token) {
-          should.not.exist(err);
-          token.should.have.property('data');
-          token.data.should.have.keys('access_token', 'expires_in', 'refresh_token', 'openid', 'scope', 'create_at');
+          expect(err).not.to.be.ok();
+          expect(token).to.have.property('data');
+          expect(token.data).to.have.keys('access_token', 'expires_in', 'refresh_token', 'openid', 'scope', 'create_at');
           done();
         });
       });
@@ -70,9 +70,9 @@ describe('oauth.js', function () {
 
     it('should invalid', function (done) {
       api.refreshAccessToken('refresh_token', function (err, data) {
-        should.exist(err);
-        err.name.should.be.equal('WeChatAPIError');
-        err.message.should.be.equal('invalid appid');
+        expect(err).to.be.ok();
+        expect(err.name).to.be.equal('WeChatAPIError');
+        expect(err.message).to.be.equal('invalid appid');
         done();
       });
     });
@@ -99,8 +99,8 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.refreshAccessToken('refresh_token', function (err, token) {
-          should.not.exist(err);
-          token.data.should.have.keys('access_token', 'expires_in', 'refresh_token', 'openid', 'scope', 'create_at');
+          expect(err).not.to.be.ok();
+          expect(token.data).to.have.keys('access_token', 'expires_in', 'refresh_token', 'openid', 'scope', 'create_at');
           done();
         });
       });
@@ -111,9 +111,9 @@ describe('oauth.js', function () {
     it('should invalid', function (done) {
       var api = new OAuth('appid', 'secret');
       api._getUser('openid', 'access_token', function (err, data) {
-        should.exist(err);
-        err.name.should.be.equal('WeChatAPIError');
-        err.message.should.be.equal('invalid credential');
+        expect(err).to.be.ok();
+        expect(err.name).to.be.equal('WeChatAPIError');
+        expect(err.message).to.be.equal('invalid credential');
         done();
       });
     });
@@ -146,8 +146,8 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api._getUser('openid', 'access_token', function (err, data) {
-          should.not.exist(err);
-          data.should.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
             'country', 'headimgurl', 'privilege');
           done();
         });
@@ -159,8 +159,8 @@ describe('oauth.js', function () {
     it('can not get token', function (done) {
       var api = new OAuth('appid', 'secret');
       api.getUser('openid', function (err, data) {
-        should.exist(err);
-        err.message.should.be.equal('No token for openid, please authorize first.');
+        expect(err).to.be.ok();
+        expect(err.message).to.be.equal('No token for openid, please authorize first.');
         done();
       });
     });
@@ -181,8 +181,8 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.getUser('openid', function (err, data) {
-          should.exist(err);
-          err.message.should.be.equal('get token error');
+          expect(err).to.be.ok();
+          expect(err.message).to.be.equal('get token error');
           done();
         });
       });
@@ -204,9 +204,9 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.getUser('openid', function (err, data) {
-          should.exist(err);
-          err.should.have.property('name', 'NoOAuthTokenError');
-          err.should.have.property('message', 'No token for openid, please authorize first.');
+          expect(err).to.be.ok();
+          expect(err).to.have.property('name', 'NoOAuthTokenError');
+          expect(err).to.have.property('message', 'No token for openid, please authorize first.');
           done();
         });
       });
@@ -249,8 +249,8 @@ describe('oauth.js', function () {
 
       it('should ok with openid', function (done) {
         api.getUser('openid', function (err, data) {
-          should.not.exist(err);
-          data.should.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
             'country', 'headimgurl', 'privilege');
           done();
         });
@@ -258,8 +258,8 @@ describe('oauth.js', function () {
 
       it('should ok with options', function (done) {
         api.getUser({openid: 'openid', lang: 'en'}, function (err, data) {
-          should.not.exist(err);
-          data.should.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
             'country', 'headimgurl', 'privilege');
           done();
         });
@@ -267,8 +267,8 @@ describe('oauth.js', function () {
 
       it('should ok with options', function (done) {
         api.getUser({openid: 'openid'}, function (err, data) {
-          should.not.exist(err);
-          data.should.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
             'country', 'headimgurl', 'privilege');
           done();
         });
@@ -295,9 +295,9 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.getUser('openid', function (err, data) {
-          should.exist(err);
-          err.should.have.property('name', 'WeChatAPIError');
-          err.should.have.property('message', 'refresh_token missing');
+          expect(err).to.be.ok();
+          expect(err).to.have.property('name', 'WeChatAPIError');
+          expect(err).to.have.property('message', 'refresh_token missing');
           done();
         });
       });
@@ -355,8 +355,8 @@ describe('oauth.js', function () {
 
       it('should ok', function (done) {
         api.getUser('openid', function (err, data) {
-          should.not.exist(err);
-          data.should.have.keys('openid', 'nickname', 'sex', 'province', 'city', 'country', 'headimgurl', 'privilege');
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city', 'country', 'headimgurl', 'privilege');
           done();
         });
       });

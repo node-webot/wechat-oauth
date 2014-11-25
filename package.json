@@ -15,18 +15,12 @@
     "wechat"
   ],
   "dependencies": {
-    "xml2js": "0.4.4",
-    "ejs": ">=1.0.0",
-    "urllib": "2.0.2",
-    "wechat-api": "1.0.0",
-    "wechat-crypto": "0.0.2"
+    "urllib": "2.0.2"
   },
   "devDependencies": {
     "supertest": "*",
     "mocha": "*",
-    "should": "~3.0.0",
     "expect.js": "*",
-    "connect": "2.5.*",
     "coveralls": "*",
     "mocha-lcov-reporter": "*",
     "muk": "*",

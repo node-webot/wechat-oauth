@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>wechat-oauth Documentation</title>
+    <meta name="keywords" content="weixin,wechat" />
+    <meta name="description" content="微信公共平台OAuth" />
+    <script src="assets/prettify.js"></script>
+    <script src="assets/jquery-1.8.2.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/base.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./index.html">wechat-oauth</a>
+        </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+          
+            <li>
+              <a href="./api.html">API Docs</a>
+            </li>
+          
+          
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <header class="jumbotron subhead">
+      <div class="container">
+        <h1>wechat-oauth <small>Version: 1.0.0 By @Jackson Tian</small></h1>
+        <p class="lead">
+          微信公共平台OAuth
+        </p>
+      </div>
+    </header>
+
+<div class="container content">
+  <div class="row">
+    <div class="col-md-3 bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav affix">
+
+  <li>
+		<div class="accordion" id="oauth">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a href="#api_oauth" class="api_side_link">oauth</a>
+					<div class="accordion-marker" id="collapse_marker_oauth">
+						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#oauth" href="#collapse_oauth">
+							 <span id="toggle_oauth" class="glyphicon glyphicon-chevron-right"></span>
+						</a>
+					</div>
+				</div>
+				<div class="accordion-body collapse" id="collapse_oauth">
+					<div class="accordion-inner">
+					<ul class="indexs">
+					
+						<li>
+							<a href="#oauth__isValid">isValid</a>
+						</li>
+					
+						<li>
+							<a href="#oauth__OAuth">OAuth</a>
+						</li>
+					
+						<li>
+							<a href="#oauth__getAccessToken">getAccessToken</a>
+						</li>
+					
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+  </li>
+  
+  <script type="text/javascript">
+    $('#collapse_marker_oauth').on('click', function() {
+    	$('#toggle_oauth').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+    });
+  </script>
+
+  <li>
+		<div class="accordion" id="util">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a href="#api_util" class="api_side_link">util</a>
+					<div class="accordion-marker" id="collapse_marker_util">
+						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#util" href="#collapse_util">
+							 <span id="toggle_util" class="glyphicon glyphicon-chevron-right"></span>
+						</a>
+					</div>
+				</div>
+				<div class="accordion-body collapse" id="collapse_util">
+					<div class="accordion-inner">
+					<ul class="indexs">
+					
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+  </li>
+  
+  <script type="text/javascript">
+    $('#collapse_marker_util').on('click', function() {
+    	$('#toggle_util').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+    });
+  </script>
+
+</ul>
+
+    </div>
+    <div class="col-md-9">
+      
+        <section id="api_oauth" class="api">
+  <h2>oauth: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#oauth__isValid">isValid</a>
+    </li>
+
+    <li>
+      <a href="#oauth__OAuth">OAuth</a>
+    </li>
+
+    <li>
+      <a href="#oauth__getAccessToken">getAccessToken</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 data-id="oauth__isValid">
+    isValid
+  </h3>
+  
+
+  <p>检查AccessToken是否有效，检查规则为当前时间和过期时间进行对比</p><p>Examples:</p><pre><code>token.isValid();
+</code></pre>
+
+  <table class="table table-striped table-bordered table-hover table-condensed">
+  
+    <tr>
+      <td>方法</td>
+      <td>AccessToken.prototype.isValid()</td> 
+      <td></td>
+      <td>isValid</td>
+    </tr>
+  
+
+  
+  </table>
+  
+  
+  <h3 data-id="oauth__OAuth">
+    OAuth
+  </h3>
+  
+
+  <p>根据appid和appsecret创建OAuth接口的构造函数<br />如需跨进程跨机器进行操作，access token需要进行全局维护<br />使用使用token的优先级是：</p><ol>
+<li>使用当前缓存的token对象</li>
+<li>调用开发传入的获取token的异步方法，获得token之后使用（并缓存它）。</li>
+</ol>
+<p>Examples:</p><pre><code>var OAuth = require(&#39;wechat&#39;).OAuth;
+var api = new OAuth(&#39;appid&#39;, &#39;secret&#39;);
+</code></pre>
+
+  <table class="table table-striped table-bordered table-hover table-condensed">
+  
+    <tr>
+      <td>函数</td>
+      <td>OAuth()</td> 
+      <td></td>
+      <td>OAuth</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>appid(String)</td>
+      <td colspan="2">在公众平台上申请得到的appid</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>appsecret(String)</td>
+      <td colspan="2">在公众平台上申请得到的app secret</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>getToken(Function)</td>
+      <td colspan="2">用于获取token的方法</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>saveToken(Function)</td>
+      <td colspan="2">用于保存token的方法</td>
+    </tr>
+  
+
+  
+  </table>
+  
+  
+  <h3 data-id="oauth__getAccessToken">
+    getAccessToken
+  </h3>
+  
+
+  <p>根据授权获取到的code，换取access token<br />获取openid之后，可以调用<code>wechat.API</code>来获取更多信息<br />Examples:</p><pre><code>api.getAccessToken(code, callback);
+</code></pre><p>Callback:</p><ul>
+<li><code>err</code>, 获取access token出现异常时的异常对象</li>
+<li><code>result</code>, 成功时得到的响应结果</li>
+</ul>
+<p>Result:</p><pre><code>{
+ data: {
+   &quot;access_token&quot;: &quot;ACCESS_TOKEN&quot;,
+   &quot;expires_in&quot;: 7200,
+   &quot;refresh_token&quot;: &quot;REFRESH_TOKEN&quot;,
+   &quot;openid&quot;: &quot;OPENID&quot;,
+   &quot;scope&quot;: &quot;SCOPE&quot;
+ }
+}
+</code></pre>
+
+  <table class="table table-striped table-bordered table-hover table-condensed">
+  
+    <tr>
+      <td>方法</td>
+      <td>OAuth.prototype.getAccessToken()</td> 
+      <td></td>
+      <td>getAccessToken</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>code(String)</td>
+      <td colspan="2">授权获取到的code</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">回调函数</td>
+    </tr>
+  
+
+  
+  </table>
+  
+</section>
+
+      
+        <section id="api_util" class="api">
+  <h2>util: API索引</h2>
+  <ul class="indexs">
+  
+  </ul>
+  <hr />
+
+</section>
+
+      
+    </div>
+  </div>
+</div>
+      <footer class="footer">
+        <div class="container">
+          <p class="pull-right">
+            <a href="#">Back to top</a>
+          </p>
+          <p>此文档通过doxmate生成。主题借鉴Bootstrap API文档风格，注解基于<a href="https://github.com/visionmedia/dox">Dox</a>。欢迎关注doxmate作者<a href="http://weibo.com/shyvo" target="_blank">@朴灵</a></p>
+          <ul class="footer-links">
+            <li><a href="https://github.com/visionmedia/dox">Dox主页</a></li>
+            <li><a href="http://html5ify.com/doxmate">Doxmate主页</a></li>
+            <li><a href="https://github.com/JacksonTian/doxmate">Doxmate源码</a></li>
+            <li><a href="https://github.com/JacksonTian/doxmate/issues?state=open">提交bug</a></li>
+          </ul>
+      </div>
+    </footer>
+    <script>
+      $(function() {
+        $('pre').addClass('prettyprint');
+        $('td pre').removeClass('prettyprint');
+        prettyPrint();
+        var $window = $(window);
+        $('.bs-docs-sidenav').affix({
+          offset: {
+            top: function () {
+              return $window.width() <= 980 ? 290 : 210
+            },
+            bottom: 270
+          }
+        });
+        $(".content").find('h1, h2, h3, h4, h5, h6').each(function () {
+          var node = $(this);
+          // 总是设置id
+          node.attr("id", node.data('id') || "index_" + node.text());
+          node.css("paddingTop", 50);
+        });
+      });
+    </script>
+  
+  </body>
+</html>
+

@@ -1,6 +1,6 @@
 {
   "name": "wechat-oauth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "微信公共平台OAuth",
   "main": "index.js",
   "scripts": {

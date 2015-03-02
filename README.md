@@ -16,7 +16,7 @@ wechat-oauth
 
 OAuth2.0网页授权，使用此接口须通过微信认证，如果用户在微信中（Web微信除外）访问公众号的第三方网页，公众号开发者可以通过此接口获取当前用户基本信息（包括昵称、性别、城市、国家）。详见：[官方文档](http://mp.weixin.qq.com/wiki/index.php?title=网页授权获取用户基本信息)
 
-详细参见[API文档](http://node-webot.github.io/wechat-oauth/api.html)
+详细参见[API文档](http://doxmate.cool/node-webot/wechat-oauth/api.html)
 
 ## Installation
 
@@ -52,13 +52,14 @@ var oauthApi = new OAuth('appid', 'secret', function (openid, callback) {
 });
 ```
 
-## 引导用户
-生成引导用户点击的URL
+### 引导用户
+生成引导用户点击的URL。
 
 ```js
 var url = client.getAuthorizeURL('redirectUrl', 'state', 'scope');
 ```
 
+### 获取Openid和AccessToken
 用户点击上步生成的URL后会被重定向到上步设置的 `redirectUrl`，并且会带有`code`参数，我们可以使用这个`code`换取`access_token`和用户的`openid`
 
 ```js
@@ -68,6 +69,7 @@ client.getAccessToken('code', function (err, result) {
 });
 ```
 
+### 获取用户信息
 如果我们生成引导用户点击的URL中`scope`参数值为`snsapi_userinfo`，接下来我们就可以使用`openid`换取用户详细信息（必须在getAccessToken方法执行完成之后）
 
 ```js

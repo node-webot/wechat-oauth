@@ -362,4 +362,53 @@ describe('oauth.js', function () {
       });
     });
   });
+
+  describe('mock getUserByCode', function () {
+    var api = new OAuth('appid', 'secret');
+    before(function () {
+      muk(urllib, 'request', function (url, args, callback) {
+        var resp = {
+          "access_token":"ACCESS_TOKEN",
+          "expires_in":7200,
+          "refresh_token":"REFRESH_TOKEN",
+          "openid":"OPENID",
+          "scope":"SCOPE"
+        };
+        process.nextTick(function () {
+          callback(null, resp);
+        });
+      });
+
+      muk(api, '_getUser', function (openid, accessToken, callback) {
+        process.nextTick(function () {
+          callback(null, {
+            "openid": "OPENID",
+            "nickname": "NICKNAME",
+            "sex": "1",
+            "province": "PROVINCE",
+            "city": "CITY",
+            "country": "COUNTRY",
+            "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
+            "privilege": [
+              "PRIVILEGE1",
+              "PRIVILEGE2"
+            ]
+          });
+        });
+      });
+    });
+
+    after(function () {
+      muk.restore();
+    });
+
+    it('should ok with getUserByCode', function (done) {
+      api.getUserByCode('code', function (err, data) {
+        expect(err).not.to.be.ok();
+        expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          'country', 'headimgurl', 'privilege');
+        done();
+      });
+    });
+  });
 });

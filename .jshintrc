@@ -15,9 +15,7 @@
     "after",
     "afterEach"
   ],
-
   "node": true,
-  "es5": true,
   "bitwise": true,
   "curly": true,
   "eqeqeq": true,

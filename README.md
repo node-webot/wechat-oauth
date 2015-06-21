@@ -59,6 +59,11 @@ var oauthApi = new OAuth('appid', 'secret', function (openid, callback) {
 var url = client.getAuthorizeURL('redirectUrl', 'state', 'scope');
 ```
 
+如果是PC上的网页，请使用以下方式生成
+```js
+var url = client.getAuthorizeURLForWebsite('redirectUrl');
+```
+
 ### 获取Openid和AccessToken
 用户点击上步生成的URL后会被重定向到上步设置的 `redirectUrl`，并且会带有`code`参数，我们可以使用这个`code`换取`access_token`和用户的`openid`
 
@@ -99,7 +104,7 @@ $ git summary
  active   : 3 days
  commits  : 9
  files    : 12
- authors  : 
+ authors  :
      8  Jackson Tian  88.9%
      1  Teng Fei      11.1%
 

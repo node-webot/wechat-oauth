@@ -23,6 +23,24 @@ describe('oauth.js', function () {
     });
   });
 
+  describe('getAuthorizeURLForWebsite', function () {
+    var auth = new OAuth('appid', 'appsecret');
+    it('should ok', function () {
+      var url = auth.getAuthorizeURLForWebsite('http://diveintonode.org/');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/qrconnect?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_login&state=#wechat_redirect');
+    });
+
+    it('should ok with state', function () {
+      var url = auth.getAuthorizeURLForWebsite('http://diveintonode.org/', 'hehe');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/qrconnect?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_login&state=hehe#wechat_redirect');
+    });
+
+    it('should ok with state and scope', function () {
+      var url = auth.getAuthorizeURLForWebsite('http://diveintonode.org/', 'hehe', 'snsapi_userinfo');
+      expect(url).to.be.equal('https://open.weixin.qq.com/connect/qrconnect?appid=appid&redirect_uri=http%3A%2F%2Fdiveintonode.org%2F&response_type=code&scope=snsapi_login&state=hehe#wechat_redirect');
+    });
+  });
+
   describe('getAccessToken', function () {
     var api = new OAuth(config.appid, config.appsecret);
     it('should invalid', function (done) {
@@ -113,7 +131,7 @@ describe('oauth.js', function () {
       api._getUser('openid', 'access_token', function (err, data) {
         expect(err).to.be.ok();
         expect(err.name).to.be.equal('WeChatAPIError');
-        expect(err.message).to.be.equal('invalid credential');
+        expect(err.message).to.be.equal('invalid credential, access_token is invalid or not latest');
         done();
       });
     });

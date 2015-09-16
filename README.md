@@ -40,6 +40,7 @@ var client = new OAuth('your appid', 'your secret');
 ```js
 var oauthApi = new OAuth('appid', 'secret', function (openid, callback) {
   // 传入一个根据openid获取对应的全局token的方法
+  // 在getUser时会通过该方法来获取token
   fs.readFile(openid +':access_token.txt', 'utf8', function (err, txt) {
     if (err) {return callback(err);}
     callback(null, JSON.parse(txt));

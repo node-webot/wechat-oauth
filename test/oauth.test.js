@@ -1,3 +1,5 @@
+'use strict';
+
 var expect = require('expect.js');
 var urllib = require('urllib');
 var muk = require('muk');
@@ -47,7 +49,7 @@ describe('oauth.js', function () {
       api.getAccessToken('code', function (err, data) {
         expect(err).to.be.ok();
         expect(err.name).to.be.equal('WeChatAPIError');
-        expect(err.message).to.be.equal('invalid code');
+        expect(err.message).to.contain('invalid code');
         done();
       });
     });
@@ -90,7 +92,7 @@ describe('oauth.js', function () {
       api.refreshAccessToken('refresh_token', function (err, data) {
         expect(err).to.be.ok();
         expect(err.name).to.be.equal('WeChatAPIError');
-        expect(err.message).to.be.equal('invalid appid');
+        expect(err.message).to.contain('invalid appid');
         done();
       });
     });
@@ -131,7 +133,7 @@ describe('oauth.js', function () {
       api._getUser('openid', 'access_token', function (err, data) {
         expect(err).to.be.ok();
         expect(err.name).to.be.equal('WeChatAPIError');
-        expect(err.message).to.be.equal('invalid credential, access_token is invalid or not latest');
+        expect(err.message).to.contain('invalid credential, access_token is invalid or not latest');
         done();
       });
     });
@@ -315,7 +317,7 @@ describe('oauth.js', function () {
         api.getUser('openid', function (err, data) {
           expect(err).to.be.ok();
           expect(err).to.have.property('name', 'WeChatAPIError');
-          expect(err).to.have.property('message', 'refresh_token missing');
+          expect(err.message).to.contain('refresh_token missing');
           done();
         });
       });

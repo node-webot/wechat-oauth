@@ -1,8 +1,8 @@
 {
   "name": "wechat-oauth",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "微信公共平台OAuth",
-  "main": "index.js",
+  "main": "lib/oauth.js",
   "scripts": {
     "test": "make test-all"
   },
@@ -15,7 +15,7 @@
     "wechat"
   ],
   "dependencies": {
-    "urllib": "2.0.2"
+    "urllib": "2.7.0"
   },
   "devDependencies": {
     "supertest": "*",
@@ -32,5 +32,6 @@
   "readmeFilename": "README.md",
   "directories": {
     "test": "test"
-  }
+  },
+  "files": ["lib"]
 }

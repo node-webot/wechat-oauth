@@ -339,11 +339,13 @@ describe('oauth.js', function () {
 
         muk(api, 'refreshAccessToken', function (refreshToken, callback) {
           var resp = {
-            "access_token":"ACCESS_TOKEN",
-            "expires_in":7200,
-            "refresh_token":"REFRESH_TOKEN",
-            "openid":"OPENID",
-            "scope":"SCOPE"
+            data: {
+              "access_token": "ACCESS_TOKEN",
+              "expires_in": 7200,
+              "refresh_token": "REFRESH_TOKEN",
+              "openid": "OPENID",
+              "scope": "SCOPE"
+            }
           };
           process.nextTick(function () {
             callback(null, resp);

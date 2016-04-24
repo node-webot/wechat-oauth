@@ -79,7 +79,7 @@ client.getAccessToken('code', function (err, result) {
 如果我们生成引导用户点击的URL中`scope`参数值为`snsapi_userinfo`，接下来我们就可以使用`openid`换取用户详细信息（必须在getAccessToken方法执行完成之后）
 
 ```js
-client.getUser('openid', function (err, result) {
+client.getUser(openid, function (err, result) {
   var userInfo = result;
 });
 ```

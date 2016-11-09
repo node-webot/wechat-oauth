@@ -432,5 +432,26 @@ describe('oauth.js', function () {
         done();
       });
     });
+
+    it('should ok with getUserByCode', function (done) {
+      var options = {code: 'code', lang: 'en'};
+      api.getUserByCode(options, function (err, data) {
+        expect(err).not.to.be.ok();
+        expect(data).to.have.keys('openid', 'nickname', 'sex', 'province', 'city',
+          'country', 'headimgurl', 'privilege');
+        done();
+      });
+    });
+  });
+
+  describe('verifyToken', function () {
+    var api = new OAuth('appid', 'secret');
+    it('should ok with verifyToken', function (done) {
+      api.verifyToken('openid', 'access_token', function (err, data) {
+        expect(err).to.be.ok();
+        expect(err.message).to.contain('access_token is invalid');
+        done();
+      });
+    });
   });
 });

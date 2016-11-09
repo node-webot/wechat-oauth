@@ -53,6 +53,103 @@ var oauthApi = new OAuth('appid', 'secret', function (openid, callback) {
 });
 ```
 
+附上全局维护AccessToken的示例代码：
+
+Mongodb|mongoose
+
+``` js
+var TokenSchema = new Schema({
+  access_token: String,
+  expires_in: Number,
+  refresh_token: String,
+  openid: String,
+  scope: String,
+  create_at: String
+});
+```
+
+自定义getToken方法
+
+```js
+TokenSchema.statics.getToken = function (openid, cb) {
+  this.findOne({openid:openid}, function (err, result) {
+    if (err) throw err;
+    return cb(null, result);
+  });
+};
+```
+
+自定义saveToken方法
+
+```js
+TokenSchema.statics.setToken = function (openid, token, cb) {
+  // 有则更新，无则添加
+  var query = {openid: openid};
+  var options = {upsert: true};
+  this.update(query, token, options, function (err, result) {
+    if (err) throw err;
+    return cb(null);
+  });
+};
+
+mongoose.model('Token', 'TokenSchema');
+```
+
+初始化：
+
+```js
+var client = new OAuth(appid, secret, function (openid, callback) {
+  // 传入一个根据openid获取对应的全局token的方法
+  // 在getUser时会通过该方法来获取token
+  Token.getToken(openid, callback);
+}, function (openid, token, callback) {
+  // 持久化时请注意，每个openid都对应一个唯一的token!
+  Token.setToken(openid, token, callback);
+});
+```
+
+MySQL:
+
+建表SQL
+
+```sql
+CREATE TABLE `token` (
+  `access_token` varchar(107) COLLATE utf8_bin NOT NULL COMMENT '令牌',
+  `expires_in` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '有效期',
+  `refresh_token` varchar(107) COLLATE utf8_bin NOT NULL COMMENT '刷新参数',
+  `openid` varchar(28) COLLATE utf8_bin NOT NULL COMMENT '用户编号',
+  `scope` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '作用域',
+  `create_at` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '令牌建立时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='微信令牌表';
+```
+
+设置openid为唯一索引
+
+```sql
+ALTER TABLE `token`
+  ADD UNIQUE KEY `openid` (`openid`);
+```
+
+使用示例：
+
+```js
+var oauthApi = new Oauth(appid, secret, function (openid, callback) {
+  var sql = 'SELECT * FROM token WHERE openid = ?';
+  db.query(sql, [openid], function (err, result) {
+    if(err) {
+      return callback(err);
+    }
+    return callback(null, result[0]);
+  });
+}, function (openid, token, callback) {
+  var sql = 'REPLACE INTO token(access_token, expires_in, refresh_token, openid, scope, create_at) VALUES(?, ?, ?, ?, ?, ?)';
+  var fields = [token.access_token, token.expires_in, token.refresh_token, token.openid, token.scope, token.create_at];
+  db.query(sql, fields, function (err, result) {
+    return callback(err);
+  });
+});
+```
+
 ### 引导用户
 生成引导用户点击的URL。
 

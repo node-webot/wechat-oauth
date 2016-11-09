@@ -133,7 +133,7 @@ ALTER TABLE `token`
 使用示例：
 
 ```js
-var oauthApi = new Oauth(appid, secret, function (openid, callback) {
+var client = new Oauth(appid, secret, function (openid, callback) {
   var sql = 'SELECT * FROM token WHERE openid = ?';
   db.query(sql, [openid], function (err, result) {
     if(err) {
@@ -198,13 +198,16 @@ QQ群：157964097，使用疑问，开发，贡献代码请加群。
 $ git summary
 
  project  : wechat-oauth
- repo age : 3 months
- active   : 3 days
- commits  : 9
- files    : 12
+ repo age : 2 years
+ active   : 12 days
+ commits  : 25
+ files    : 11
  authors  :
-     8  Jackson Tian  88.9%
-     1  Teng Fei      11.1%
+    21  Jackson Tian  84.0%
+     1  Kainy Guo     4.0%
+     1  Teng Fei      4.0%
+     1  welch         4.0%
+     1  wzw           4.0%
 
 ```
 

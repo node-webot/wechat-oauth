@@ -198,16 +198,17 @@ QQ群：157964097，使用疑问，开发，贡献代码请加群。
 $ git summary
 
  project  : wechat-oauth
- repo age : 2 years
- active   : 12 days
- commits  : 25
+ repo age : 2 years, 2 months
+ active   : 13 days
+ commits  : 29
  files    : 11
  authors  :
-    21  Jackson Tian  84.0%
-     1  Kainy Guo     4.0%
-     1  Teng Fei      4.0%
-     1  welch         4.0%
-     1  wzw           4.0%
+    24  Jackson Tian  82.8%
+     1  Kainy Guo     3.4%
+     1  Teng Fei      3.4%
+     1  cherry-geqi   3.4%
+     1  welch         3.4%
+     1  wzw           3.4%
 
 ```
 

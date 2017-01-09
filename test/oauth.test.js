@@ -83,6 +83,35 @@ describe('oauth.js', function () {
         });
       });
     });
+
+    describe('should not ok', function () {
+      before(function () {
+        muk(urllib, 'request', function (url, args, callback) {
+          var resp = {
+            "access_token":"ACCESS_TOKEN",
+            "expires_in": 0.1,
+            "refresh_token":"REFRESH_TOKEN",
+            "openid":"OPENID",
+            "scope":"SCOPE"
+          };
+
+          setTimeout(function () {
+            callback(null, resp);
+          }, 100);
+        });
+      });
+
+      after(function () {
+        muk.restore();
+      });
+
+      it('should not ok', function (done) {
+        api.getAccessToken('code', function (err, token) {
+          expect(token.isValid()).not.to.be.ok();
+          done();
+        });
+      });
+    });
   });
 
   describe('refreshAccessToken', function () {

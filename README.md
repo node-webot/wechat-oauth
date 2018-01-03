@@ -114,10 +114,10 @@ MySQL:
 
 ```sql
 CREATE TABLE `token` (
-  `access_token` varchar(107) COLLATE utf8_bin NOT NULL COMMENT '令牌',
+  `access_token` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '令牌',
   `expires_in` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '有效期',
-  `refresh_token` varchar(107) COLLATE utf8_bin NOT NULL COMMENT '刷新参数',
-  `openid` varchar(28) COLLATE utf8_bin NOT NULL COMMENT '用户编号',
+  `refresh_token` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '刷新参数',
+  `openid` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '用户编号',
   `scope` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '作用域',
   `create_at` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '令牌建立时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='微信令牌表';

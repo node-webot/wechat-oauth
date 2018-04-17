@@ -150,6 +150,23 @@ var client = new Oauth(appid, secret, function (openid, callback) {
 });
 ```
 
+### 小程序初始化
+使用小程序时，需要在初始化OAuth时指定`isMiniProgram`参数为`true`
+
+单进程
+```
+var OAuth = require('wechat-oauth');
+var client = new OAuth('your appid', 'your secret', null, null, true); // 最后一个参数即isMiniProgram
+```
+
+多进程
+```
+var oauthApi = new OAuth('appid', 'secret', getToken, saveToken, true);
+```
+
+注意：微信不会将用户的sessionKey过期时间告知开发者，该时间会根据用户与小程序互动频繁程度等因素发生变化，建议根据小程序客户端`wx.checkSession()`方法检验凭证是否依旧有效，若失效应该再次使用code换取新的sessionKey。故而此例中的`getToken`和`saveToken`方法过期机制须有不同。
+[官方文档](https://developers.weixin.qq.com/miniprogram/dev/api/signature.html)
+
 ### 引导用户
 生成引导用户点击的URL。
 

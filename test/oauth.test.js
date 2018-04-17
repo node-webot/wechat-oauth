@@ -483,4 +483,45 @@ describe('oauth.js', function () {
       });
     });
   });
+
+  describe('getSessionKey', function () {
+    var api = new OAuth('appid', 'secret', null, null, true);
+    it('should invalid', function (done) {
+      api.getSessionKey('code', function (err, result) {
+        expect(err).to.be.ok();
+        expect(err.name).to.be.equal('WeChatAPIError');
+        expect(err.message).to.contain('invalid appid');
+        done();
+      });
+    });
+
+    describe('should ok', function () {
+      before(function () {
+        muk(urllib, 'request', function (url, args, callback) {
+          var resp = {
+            session_key: 'SESSION_KEY',
+            expires_in:7200,
+            openid: 'OPENID',
+            unionid: 'UNIONID'
+          };
+          process.nextTick(function () {
+            callback(null, resp);
+          });
+        });
+      });
+
+      after(function () {
+        muk.restore();
+      });
+
+      it('should ok', function (done) {
+        api.getSessionKey('code', function (err, token) {
+          expect(err).not.to.be.ok();
+          expect(token).to.have.property('data');
+          expect(token.data).to.have.keys('session_key', 'openid', 'create_at');
+          done();
+        });
+      });
+    });
+  });
 });

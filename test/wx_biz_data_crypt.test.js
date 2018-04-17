@@ -33,17 +33,29 @@ describe('wx_biz_data_crypt.js', function () {
     });
 
     it('should not ok on invalid decrypted data input', function (){
-      expect(cryptor.decryptData).withArgs('', iv).to.throwError();
+      try{
+        cryptor.decryptData('', iv);
+      }catch(e){
+        expect(e).to.be.a(Error);
+      }
     });
 
     it('should not ok on invalid decrypted data input', function (){
-      expect(cryptor.decryptData).withArgs(encryptedData, '').to.throwError();
+      try{
+        cryptor.decryptData(encryptedData, '');
+      }catch(e){
+        expect(e).to.be.a(Error);
+      }
     });
 
-    it('should not ok on invalid app id', function (){
+    it('should not ok with invalid app id', function (){
       var invalidCryptor = new WxBizCrypt('invalid app id', sessionKey);
-      expect(invalidCryptor.decryptData).withArgs(encryptedData, '').to.throwError();
+      console.log(invalidCryptor.appId);
+      try{
+        invalidCryptor.decryptData(encryptedData, iv);
+      }catch(e){
+        expect(e).to.be.a(Error);
+      }
     });
-
   });
 });

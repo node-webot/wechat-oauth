@@ -473,6 +473,61 @@ describe('oauth.js', function () {
     });
   });
 
+  describe('mock getUserByCode mini program', function () {
+    var api = new OAuth('appid', 'secret', null, null, true);
+    before(function () {
+      muk(api, 'getSessionKey', function (code, callback) {
+        var resp = {
+          data: {
+            session_key: 'SESSION_KEY',
+            expires_in:7200,
+            openid: 'OPENID',
+            unionid: 'UNIONID'
+          }
+        };
+        process.nextTick(function () {
+          callback(null, resp);
+        });
+      });
+
+      muk(api, 'decryptMiniProgramUser', function (code, callback) {
+        process.nextTick(function () {
+          callback(null, {
+            openId: 'OPENID',
+            nickName: 'NICKNAME',
+            gender: 0,
+            city: 'CITY',
+            province: 'PROVINCE',
+            country: 'COUNTRY',
+            avatarUrl: 'AVATARURL',
+            unionId: 'UNIONID',
+          });
+        });
+      });
+
+    });
+
+    after(function () {
+      muk.restore();
+    });
+
+    it('should ok with getUserByCode', function (done) {
+      api.getUserByCode('code', function (err, data) {
+        expect(err).not.to.be.ok();
+        expect(data).to.have.keys('openId', 'nickName', 'gender', 'province', 'city',
+          'country', 'avatarUrl');
+        done();
+      });
+    });
+
+    it('should call getSessionKey if is mini-program', function (done) {
+      api.getUserByCode('code', function (err, data) {
+        done();
+      });
+    });
+
+  });
+
   describe('verifyToken', function () {
     var api = new OAuth('appid', 'secret');
     it('should ok with verifyToken', function (done) {

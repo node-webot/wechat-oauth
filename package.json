@@ -18,14 +18,15 @@
     "urllib": "2.7.0"
   },
   "devDependencies": {
-    "supertest": "*",
-    "mocha": "*",
-    "expect.js": "*",
     "coveralls": "*",
+    "eslint": "^4.19.1",
+    "expect.js": "*",
+    "istanbul": "*",
+    "mocha": "*",
     "mocha-lcov-reporter": "*",
     "muk": "*",
     "rewire": "*",
-    "istanbul": "*"
+    "supertest": "*"
   },
   "author": "Jackson Tian",
   "license": "MIT",
@@ -33,5 +34,7 @@
   "directories": {
     "test": "test"
   },
-  "files": ["lib"]
+  "files": [
+    "lib"
+  ]
 }

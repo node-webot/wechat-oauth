@@ -473,6 +473,72 @@ describe('oauth.js', function () {
     });
   });
 
+  describe('mock getUserByCode mini program', function () {
+    describe('should ok', function () {
+      var api = new OAuth('appid', 'secret', null, null, true);
+      before(function () {
+        muk(api, 'getSessionKey', function (code, callback) {
+          var resp = {
+            data: {
+              session_key: 'SESSION_KEY',
+              expires_in:7200,
+              openid: 'OPENID',
+              unionid: 'UNIONID'
+            }
+          };
+          process.nextTick(function () {
+            callback(null, resp);
+          });
+        });
+
+        muk(api, 'decryptMiniProgramUser', function (code, callback) {
+          process.nextTick(function () {
+            callback(null, {
+              openId: 'OPENID',
+              nickName: 'NICKNAME',
+              gender: 0,
+              city: 'CITY',
+              province: 'PROVINCE',
+              country: 'COUNTRY',
+              avatarUrl: 'AVATARURL',
+              unionId: 'UNIONID',
+            });
+          });
+        });
+      });
+
+      it('should ok with getUserByCode', function (done) {
+        api.getUserByCode('code', function (err, data) {
+          expect(err).not.to.be.ok();
+          expect(data).to.have.keys('openId', 'nickName', 'gender', 'province', 'city',
+            'country', 'avatarUrl');
+          done();
+        });
+      });
+
+      after(function () {
+        muk.restore();
+      });
+    });
+
+    describe('should not ok', function () {
+      it('should not ok if get session key throws an error', function (done) {
+        var api = new OAuth('appid', 'secret', null, null, true);
+
+        muk(api, 'getSessionKey', function (code, callback) {
+          callback(new Error('mock error'));
+        });
+
+        api.getUserByCode('code', function (err, data) {
+          expect(err).to.be.a(Error);
+          done();
+        });
+
+        muk.restore();
+      });
+    });
+  });
+
   describe('verifyToken', function () {
     var api = new OAuth('appid', 'secret');
     it('should ok with verifyToken', function (done) {
@@ -480,6 +546,59 @@ describe('oauth.js', function () {
         expect(err).to.be.ok();
         expect(err.message).to.contain('access_token is invalid');
         done();
+      });
+    });
+  });
+
+  describe('getSessionKey', function () {
+    var api = new OAuth('appid', 'secret', null, null, true);
+    it('should invalid', function (done) {
+      api.getSessionKey('code', function (err, result) {
+        expect(err).to.be.ok();
+        expect(err.name).to.be.equal('WeChatAPIError');
+        expect(err.message).to.contain('invalid appid');
+        done();
+      });
+    });
+
+    describe('should ok', function () {
+      before(function () {
+        muk(urllib, 'request', function (url, args, callback) {
+          var resp = {
+            session_key: 'SESSION_KEY',
+            expires_in:7200,
+            openid: 'OPENID',
+            unionid: 'UNIONID'
+          };
+          process.nextTick(function () {
+            callback(null, resp);
+          });
+        });
+      });
+
+      after(function () {
+        muk.restore();
+      });
+
+      it('should ok', function (done) {
+        api.getSessionKey('code', function (err, token) {
+          expect(err).not.to.be.ok();
+          expect(token).to.have.property('data');
+          expect(token.data).to.have.keys('session_key', 'openid', 'create_at');
+          done();
+        });
+      });
+    });
+  });
+
+  describe('decryptMiniProgramUser', function () {
+    describe('should not ok', function () {
+      var api = new OAuth('appid', 'secret', null, null, true);
+      it('should not ok with invalid data', function (done) {
+        api.decryptMiniProgramUser({}, function (err, result) {
+          expect(err).to.be.a(Error);
+          done();
+        });
       });
     });
   });

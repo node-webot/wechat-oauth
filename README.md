@@ -154,13 +154,15 @@ var client = new Oauth(appid, secret, function (openid, callback) {
 使用小程序时，需要在初始化OAuth时指定`isMiniProgram`参数为`true`
 
 单进程
-```
+
+```js
 var OAuth = require('wechat-oauth');
 var client = new OAuth('your appid', 'your secret', null, null, true); // 最后一个参数即isMiniProgram
 ```
 
 多进程
-```
+
+```js
 var oauthApi = new OAuth('appid', 'secret', getToken, saveToken, true);
 ```
 

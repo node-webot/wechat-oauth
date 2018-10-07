@@ -491,19 +491,17 @@ describe('oauth.js', function () {
           });
         });
 
-        muk(api, 'decryptMiniProgramUser', function (code, callback) {
-          process.nextTick(function () {
-            callback(null, {
-              openId: 'OPENID',
-              nickName: 'NICKNAME',
-              gender: 0,
-              city: 'CITY',
-              province: 'PROVINCE',
-              country: 'COUNTRY',
-              avatarUrl: 'AVATARURL',
-              unionId: 'UNIONID',
-            });
-          });
+        muk(api, 'decryptMiniProgramUser', function (code) {
+          return {
+            openId: 'OPENID',
+            nickName: 'NICKNAME',
+            gender: 0,
+            city: 'CITY',
+            province: 'PROVINCE',
+            country: 'COUNTRY',
+            avatarUrl: 'AVATARURL',
+            unionId: 'UNIONID',
+          };
         });
       });
 
@@ -594,11 +592,10 @@ describe('oauth.js', function () {
   describe('decryptMiniProgramUser', function () {
     describe('should not ok', function () {
       var api = new OAuth('appid', 'secret', null, null, true);
-      it('should not ok with invalid data', function (done) {
-        api.decryptMiniProgramUser({}, function (err, result) {
-          expect(err).to.be.a(Error);
-          done();
-        });
+      it('should not ok with invalid data', function () {
+        expect(function () {
+          api.decryptMiniProgramUser({});
+        }).to.throwError();
       });
     });
   });

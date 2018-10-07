@@ -15,7 +15,7 @@
     "wechat"
   ],
   "dependencies": {
-    "urllib": "2.7.0"
+    "urllib": "^2.30.0"
   },
   "devDependencies": {
     "coveralls": "*",
